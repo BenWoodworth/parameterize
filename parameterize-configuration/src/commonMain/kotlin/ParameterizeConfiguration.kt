@@ -177,7 +177,7 @@ public class ParameterizeConfiguration internal constructor(
 
     /** @see Builder.onFailure */
     public class OnFailureScope internal constructor(
-        private val state: ParameterizeState,
+        private val state: ConfiguredParameterizeState,
 
         /**
          * The number of iterations that have been executed, including this failing iteration.

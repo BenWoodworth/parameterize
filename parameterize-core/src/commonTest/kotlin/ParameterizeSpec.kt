@@ -294,6 +294,28 @@ class ParameterizeSpec {
     }
 
     /**
+     * The [parameterize] implementation catches all [Throwable]s so it can handle its own `throw`-based control flow.
+     * Anything else that's thrown shouldn't be swallowed, and throw normally, aborting the loop.
+     */
+    @Test
+    fun failures_from_the_block_should_not_be_caught() {
+        var iterationCount = 0
+
+        class ThrownFailure : Throwable()
+
+        assertFailsWith<ThrownFailure> {
+            parameterize {
+                val iteration by parameterOf(1..2)
+
+                iterationCount++
+                throw ThrownFailure()
+            }
+        }
+
+        assertEquals(1, iterationCount, "continued to next iteration after failing")
+    }
+
+    /**
      * The motivating use case here is decorating a Kotest test group, in which the test declarations suspend.
      */
     @Test

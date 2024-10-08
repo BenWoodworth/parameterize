@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+import org.jetbrains.dokka.gradle.DokkaTask
+
 plugins {
     id("kotlin-multiplatform-conventions")
     id("dokka-conventions")
@@ -36,8 +38,26 @@ kotlin {
 
         val commonMain by getting {
             dependencies {
-                api(project(":parameterize-api"))
+                api(project(":parameterize-core"))
             }
         }
+        val jvmMain by getting {
+            dependencies {
+                implementation(libs.opentest4j)
+            }
+        }
+    }
+}
+
+tasks.withType<DokkaTask>().configureEach {
+    doLast {
+        layout.buildDirectory.asFileTree.asSequence()
+            .filter { it.isFile && it.extension == "html" }
+            .forEach { file ->
+                file.readText()
+                    // Remove "ParameterizeConfiguration." prefix from link text for *Scope classes
+                    .replace(Regex("""(?<=>)ParameterizeConfiguration\.(?=\w+Scope</a>)"""), "")
+                    .let { file.writeText(it) }
+            }
     }
 }

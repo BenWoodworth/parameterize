@@ -1,95 +1,16 @@
 public abstract interface annotation class com/benwoodworth/parameterize/ExperimentalParameterizeApi : java/lang/annotation/Annotation {
 }
 
-public final class com/benwoodworth/parameterize/ParameterizeConfiguration {
-	public static final field Companion Lcom/benwoodworth/parameterize/ParameterizeConfiguration$Companion;
-	public final fun getDecorator ()Lkotlin/jvm/functions/Function3;
-	public final fun getOnComplete ()Lkotlin/jvm/functions/Function1;
-	public final fun getOnFailure ()Lkotlin/jvm/functions/Function2;
-	public fun toString ()Ljava/lang/String;
-}
-
-public final class com/benwoodworth/parameterize/ParameterizeConfiguration$Builder {
-	public final fun getDecorator ()Lkotlin/jvm/functions/Function3;
-	public final fun getOnComplete ()Lkotlin/jvm/functions/Function1;
-	public final fun getOnFailure ()Lkotlin/jvm/functions/Function2;
-	public final fun setDecorator (Lkotlin/jvm/functions/Function3;)V
-	public final fun setOnComplete (Lkotlin/jvm/functions/Function1;)V
-	public final fun setOnFailure (Lkotlin/jvm/functions/Function2;)V
-}
-
-public final class com/benwoodworth/parameterize/ParameterizeConfiguration$Companion {
-	public final fun getDefault ()Lcom/benwoodworth/parameterize/ParameterizeConfiguration;
-	public final fun invoke (Lcom/benwoodworth/parameterize/ParameterizeConfiguration;Lkotlin/jvm/functions/Function1;)Lcom/benwoodworth/parameterize/ParameterizeConfiguration;
-	public static synthetic fun invoke$default (Lcom/benwoodworth/parameterize/ParameterizeConfiguration$Companion;Lcom/benwoodworth/parameterize/ParameterizeConfiguration;Lkotlin/jvm/functions/Function1;ILjava/lang/Object;)Lcom/benwoodworth/parameterize/ParameterizeConfiguration;
-}
-
-public final class com/benwoodworth/parameterize/ParameterizeConfiguration$DecoratorScope {
-	public final fun isFirstIteration ()Z
-	public final fun isLastIteration ()Z
-}
-
-public final class com/benwoodworth/parameterize/ParameterizeConfiguration$OnCompleteScope {
-	public final fun getCompletedEarly ()Z
-	public final fun getFailureCount ()J
-	public final fun getIterationCount ()J
-	public final fun getRecordedFailures ()Ljava/util/List;
-	public final fun getSkipCount ()J
-	public final fun getSuccessCount ()J
-	public final fun invoke (Lcom/benwoodworth/parameterize/ParameterizeFailedError$Companion;)Lcom/benwoodworth/parameterize/ParameterizeFailedError;
-}
-
-public final class com/benwoodworth/parameterize/ParameterizeConfiguration$OnFailureScope {
-	public final fun getArguments ()Ljava/util/List;
-	public final fun getBreakEarly ()Z
-	public final fun getFailureCount ()J
-	public final fun getIterationCount ()J
-	public final fun getParameters ()Ljava/util/List;
-	public final fun getRecordFailure ()Z
-	public final fun setBreakEarly (Z)V
-	public final fun setRecordFailure (Z)V
-}
-
 public abstract interface annotation class com/benwoodworth/parameterize/ParameterizeDsl : java/lang/annotation/Annotation {
 }
 
-public final class com/benwoodworth/parameterize/ParameterizeFailedError : org/opentest4j/MultipleFailuresError {
-	public static final field Companion Lcom/benwoodworth/parameterize/ParameterizeFailedError$Companion;
-	public synthetic fun <init> (Ljava/util/List;JJZLkotlin/jvm/internal/DefaultConstructorMarker;)V
-	public fun fillInStackTrace ()Ljava/lang/Throwable;
-	public synthetic fun getFailures ()Ljava/util/List;
-	public fun getMessage ()Ljava/lang/String;
-	public synthetic fun hasFailures ()Z
-}
-
-public final class com/benwoodworth/parameterize/ParameterizeFailedError$Companion {
-}
-
-public final class com/benwoodworth/parameterize/ParameterizeFailure {
-	public final fun getArguments ()Ljava/util/List;
-	public final fun getFailure ()Ljava/lang/Throwable;
-	public final fun getParameters ()Ljava/util/List;
-}
-
-public final class com/benwoodworth/parameterize/ParameterizeFailure$Argument {
-	public final fun component1 ()Lkotlin/reflect/KProperty;
-	public final fun component2 ()Ljava/lang/Object;
-	public final fun getArgument ()Ljava/lang/Object;
-	public final fun getParameter ()Lkotlin/reflect/KProperty;
-	public fun toString ()Ljava/lang/String;
-}
-
 public final class com/benwoodworth/parameterize/ParameterizeIterator {
-	public fun <init> (Lcom/benwoodworth/parameterize/ParameterizeConfiguration;)V
-	public final fun endIteration ()V
+	public fun <init> ()V
 	public final fun handleFailure (Ljava/lang/Throwable;)V
 	public final fun nextIteration ()Lcom/benwoodworth/parameterize/ParameterizeScope;
 }
 
 public final class com/benwoodworth/parameterize/ParameterizeKt {
-	public static final fun parameterize (Lcom/benwoodworth/parameterize/ParameterizeConfiguration;Lkotlin/jvm/functions/Function1;)V
-	public static final fun parameterize (Lcom/benwoodworth/parameterize/ParameterizeConfiguration;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;)V
-	public static synthetic fun parameterize$default (Lcom/benwoodworth/parameterize/ParameterizeConfiguration;Lkotlin/jvm/functions/Function1;ILjava/lang/Object;)V
-	public static synthetic fun parameterize$default (Lcom/benwoodworth/parameterize/ParameterizeConfiguration;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;ILjava/lang/Object;)V
+	public static final fun parameterize (Lkotlin/jvm/functions/Function1;)V
 }
 

@@ -14,113 +14,12 @@ open annotation class com.benwoodworth.parameterize/ParameterizeDsl : kotlin/Ann
     constructor <init>() // com.benwoodworth.parameterize/ParameterizeDsl.<init>|<init>(){}[0]
 }
 
-final class com.benwoodworth.parameterize/ParameterizeConfiguration { // com.benwoodworth.parameterize/ParameterizeConfiguration|null[0]
-    final val decorator // com.benwoodworth.parameterize/ParameterizeConfiguration.decorator|{}decorator[0]
-        final fun <get-decorator>(): kotlin.coroutines/SuspendFunction2<com.benwoodworth.parameterize/ParameterizeConfiguration.DecoratorScope, kotlin.coroutines/SuspendFunction1<com.benwoodworth.parameterize/ParameterizeConfiguration.DecoratorScope, kotlin/Unit>, kotlin/Unit> // com.benwoodworth.parameterize/ParameterizeConfiguration.decorator.<get-decorator>|<get-decorator>(){}[0]
-    final val onComplete // com.benwoodworth.parameterize/ParameterizeConfiguration.onComplete|{}onComplete[0]
-        final fun <get-onComplete>(): kotlin/Function1<com.benwoodworth.parameterize/ParameterizeConfiguration.OnCompleteScope, kotlin/Unit> // com.benwoodworth.parameterize/ParameterizeConfiguration.onComplete.<get-onComplete>|<get-onComplete>(){}[0]
-    final val onFailure // com.benwoodworth.parameterize/ParameterizeConfiguration.onFailure|{}onFailure[0]
-        final fun <get-onFailure>(): kotlin/Function2<com.benwoodworth.parameterize/ParameterizeConfiguration.OnFailureScope, kotlin/Throwable, kotlin/Unit> // com.benwoodworth.parameterize/ParameterizeConfiguration.onFailure.<get-onFailure>|<get-onFailure>(){}[0]
-
-    final fun toString(): kotlin/String // com.benwoodworth.parameterize/ParameterizeConfiguration.toString|toString(){}[0]
-
-    final class Builder { // com.benwoodworth.parameterize/ParameterizeConfiguration.Builder|null[0]
-        final var decorator // com.benwoodworth.parameterize/ParameterizeConfiguration.Builder.decorator|{}decorator[0]
-            final fun <get-decorator>(): kotlin.coroutines/SuspendFunction2<com.benwoodworth.parameterize/ParameterizeConfiguration.DecoratorScope, kotlin.coroutines/SuspendFunction1<com.benwoodworth.parameterize/ParameterizeConfiguration.DecoratorScope, kotlin/Unit>, kotlin/Unit> // com.benwoodworth.parameterize/ParameterizeConfiguration.Builder.decorator.<get-decorator>|<get-decorator>(){}[0]
-            final fun <set-decorator>(kotlin.coroutines/SuspendFunction2<com.benwoodworth.parameterize/ParameterizeConfiguration.DecoratorScope, kotlin.coroutines/SuspendFunction1<com.benwoodworth.parameterize/ParameterizeConfiguration.DecoratorScope, kotlin/Unit>, kotlin/Unit>) // com.benwoodworth.parameterize/ParameterizeConfiguration.Builder.decorator.<set-decorator>|<set-decorator>(kotlin.coroutines.SuspendFunction2<com.benwoodworth.parameterize.ParameterizeConfiguration.DecoratorScope,kotlin.coroutines.SuspendFunction1<com.benwoodworth.parameterize.ParameterizeConfiguration.DecoratorScope,kotlin.Unit>,kotlin.Unit>){}[0]
-        final var onComplete // com.benwoodworth.parameterize/ParameterizeConfiguration.Builder.onComplete|{}onComplete[0]
-            final fun <get-onComplete>(): kotlin/Function1<com.benwoodworth.parameterize/ParameterizeConfiguration.OnCompleteScope, kotlin/Unit> // com.benwoodworth.parameterize/ParameterizeConfiguration.Builder.onComplete.<get-onComplete>|<get-onComplete>(){}[0]
-            final fun <set-onComplete>(kotlin/Function1<com.benwoodworth.parameterize/ParameterizeConfiguration.OnCompleteScope, kotlin/Unit>) // com.benwoodworth.parameterize/ParameterizeConfiguration.Builder.onComplete.<set-onComplete>|<set-onComplete>(kotlin.Function1<com.benwoodworth.parameterize.ParameterizeConfiguration.OnCompleteScope,kotlin.Unit>){}[0]
-        final var onFailure // com.benwoodworth.parameterize/ParameterizeConfiguration.Builder.onFailure|{}onFailure[0]
-            final fun <get-onFailure>(): kotlin/Function2<com.benwoodworth.parameterize/ParameterizeConfiguration.OnFailureScope, kotlin/Throwable, kotlin/Unit> // com.benwoodworth.parameterize/ParameterizeConfiguration.Builder.onFailure.<get-onFailure>|<get-onFailure>(){}[0]
-            final fun <set-onFailure>(kotlin/Function2<com.benwoodworth.parameterize/ParameterizeConfiguration.OnFailureScope, kotlin/Throwable, kotlin/Unit>) // com.benwoodworth.parameterize/ParameterizeConfiguration.Builder.onFailure.<set-onFailure>|<set-onFailure>(kotlin.Function2<com.benwoodworth.parameterize.ParameterizeConfiguration.OnFailureScope,kotlin.Throwable,kotlin.Unit>){}[0]
-    }
-
-    final class DecoratorScope { // com.benwoodworth.parameterize/ParameterizeConfiguration.DecoratorScope|null[0]
-        final val isFirstIteration // com.benwoodworth.parameterize/ParameterizeConfiguration.DecoratorScope.isFirstIteration|{}isFirstIteration[0]
-            final fun <get-isFirstIteration>(): kotlin/Boolean // com.benwoodworth.parameterize/ParameterizeConfiguration.DecoratorScope.isFirstIteration.<get-isFirstIteration>|<get-isFirstIteration>(){}[0]
-
-        final var isLastIteration // com.benwoodworth.parameterize/ParameterizeConfiguration.DecoratorScope.isLastIteration|{}isLastIteration[0]
-            final fun <get-isLastIteration>(): kotlin/Boolean // com.benwoodworth.parameterize/ParameterizeConfiguration.DecoratorScope.isLastIteration.<get-isLastIteration>|<get-isLastIteration>(){}[0]
-    }
-
-    final class OnCompleteScope { // com.benwoodworth.parameterize/ParameterizeConfiguration.OnCompleteScope|null[0]
-        final val completedEarly // com.benwoodworth.parameterize/ParameterizeConfiguration.OnCompleteScope.completedEarly|{}completedEarly[0]
-            final fun <get-completedEarly>(): kotlin/Boolean // com.benwoodworth.parameterize/ParameterizeConfiguration.OnCompleteScope.completedEarly.<get-completedEarly>|<get-completedEarly>(){}[0]
-        final val failureCount // com.benwoodworth.parameterize/ParameterizeConfiguration.OnCompleteScope.failureCount|{}failureCount[0]
-            final fun <get-failureCount>(): kotlin/Long // com.benwoodworth.parameterize/ParameterizeConfiguration.OnCompleteScope.failureCount.<get-failureCount>|<get-failureCount>(){}[0]
-        final val iterationCount // com.benwoodworth.parameterize/ParameterizeConfiguration.OnCompleteScope.iterationCount|{}iterationCount[0]
-            final fun <get-iterationCount>(): kotlin/Long // com.benwoodworth.parameterize/ParameterizeConfiguration.OnCompleteScope.iterationCount.<get-iterationCount>|<get-iterationCount>(){}[0]
-        final val recordedFailures // com.benwoodworth.parameterize/ParameterizeConfiguration.OnCompleteScope.recordedFailures|{}recordedFailures[0]
-            final fun <get-recordedFailures>(): kotlin.collections/List<com.benwoodworth.parameterize/ParameterizeFailure> // com.benwoodworth.parameterize/ParameterizeConfiguration.OnCompleteScope.recordedFailures.<get-recordedFailures>|<get-recordedFailures>(){}[0]
-        final val skipCount // com.benwoodworth.parameterize/ParameterizeConfiguration.OnCompleteScope.skipCount|{}skipCount[0]
-            final fun <get-skipCount>(): kotlin/Long // com.benwoodworth.parameterize/ParameterizeConfiguration.OnCompleteScope.skipCount.<get-skipCount>|<get-skipCount>(){}[0]
-        final val successCount // com.benwoodworth.parameterize/ParameterizeConfiguration.OnCompleteScope.successCount|{}successCount[0]
-            final fun <get-successCount>(): kotlin/Long // com.benwoodworth.parameterize/ParameterizeConfiguration.OnCompleteScope.successCount.<get-successCount>|<get-successCount>(){}[0]
-
-        final fun (com.benwoodworth.parameterize/ParameterizeFailedError.Companion).invoke(): com.benwoodworth.parameterize/ParameterizeFailedError // com.benwoodworth.parameterize/ParameterizeConfiguration.OnCompleteScope.invoke|invoke@com.benwoodworth.parameterize.ParameterizeFailedError.Companion(){}[0]
-    }
-
-    final class OnFailureScope { // com.benwoodworth.parameterize/ParameterizeConfiguration.OnFailureScope|null[0]
-        final val arguments // com.benwoodworth.parameterize/ParameterizeConfiguration.OnFailureScope.arguments|{}arguments[0]
-            final fun <get-arguments>(): kotlin.collections/List<com.benwoodworth.parameterize/ParameterizeFailure.Argument<*>> // com.benwoodworth.parameterize/ParameterizeConfiguration.OnFailureScope.arguments.<get-arguments>|<get-arguments>(){}[0]
-        final val failureCount // com.benwoodworth.parameterize/ParameterizeConfiguration.OnFailureScope.failureCount|{}failureCount[0]
-            final fun <get-failureCount>(): kotlin/Long // com.benwoodworth.parameterize/ParameterizeConfiguration.OnFailureScope.failureCount.<get-failureCount>|<get-failureCount>(){}[0]
-        final val iterationCount // com.benwoodworth.parameterize/ParameterizeConfiguration.OnFailureScope.iterationCount|{}iterationCount[0]
-            final fun <get-iterationCount>(): kotlin/Long // com.benwoodworth.parameterize/ParameterizeConfiguration.OnFailureScope.iterationCount.<get-iterationCount>|<get-iterationCount>(){}[0]
-        final val parameters // com.benwoodworth.parameterize/ParameterizeConfiguration.OnFailureScope.parameters|{}parameters[0]
-            final fun <get-parameters>(): kotlin.collections/List<com.benwoodworth.parameterize/ParameterizeScope.DeclaredParameter<*>> // com.benwoodworth.parameterize/ParameterizeConfiguration.OnFailureScope.parameters.<get-parameters>|<get-parameters>(){}[0]
-
-        final var breakEarly // com.benwoodworth.parameterize/ParameterizeConfiguration.OnFailureScope.breakEarly|{}breakEarly[0]
-            final fun <get-breakEarly>(): kotlin/Boolean // com.benwoodworth.parameterize/ParameterizeConfiguration.OnFailureScope.breakEarly.<get-breakEarly>|<get-breakEarly>(){}[0]
-            final fun <set-breakEarly>(kotlin/Boolean) // com.benwoodworth.parameterize/ParameterizeConfiguration.OnFailureScope.breakEarly.<set-breakEarly>|<set-breakEarly>(kotlin.Boolean){}[0]
-        final var recordFailure // com.benwoodworth.parameterize/ParameterizeConfiguration.OnFailureScope.recordFailure|{}recordFailure[0]
-            final fun <get-recordFailure>(): kotlin/Boolean // com.benwoodworth.parameterize/ParameterizeConfiguration.OnFailureScope.recordFailure.<get-recordFailure>|<get-recordFailure>(){}[0]
-            final fun <set-recordFailure>(kotlin/Boolean) // com.benwoodworth.parameterize/ParameterizeConfiguration.OnFailureScope.recordFailure.<set-recordFailure>|<set-recordFailure>(kotlin.Boolean){}[0]
-    }
-
-    final object Companion { // com.benwoodworth.parameterize/ParameterizeConfiguration.Companion|null[0]
-        final val default // com.benwoodworth.parameterize/ParameterizeConfiguration.Companion.default|{}default[0]
-            final fun <get-default>(): com.benwoodworth.parameterize/ParameterizeConfiguration // com.benwoodworth.parameterize/ParameterizeConfiguration.Companion.default.<get-default>|<get-default>(){}[0]
-
-        final fun invoke(com.benwoodworth.parameterize/ParameterizeConfiguration = ..., kotlin/Function1<com.benwoodworth.parameterize/ParameterizeConfiguration.Builder, kotlin/Unit>): com.benwoodworth.parameterize/ParameterizeConfiguration // com.benwoodworth.parameterize/ParameterizeConfiguration.Companion.invoke|invoke(com.benwoodworth.parameterize.ParameterizeConfiguration;kotlin.Function1<com.benwoodworth.parameterize.ParameterizeConfiguration.Builder,kotlin.Unit>){}[0]
-    }
-}
-
-final class com.benwoodworth.parameterize/ParameterizeFailedError : kotlin/AssertionError { // com.benwoodworth.parameterize/ParameterizeFailedError|null[0]
-    final val message // com.benwoodworth.parameterize/ParameterizeFailedError.message|{}message[0]
-        final fun <get-message>(): kotlin/String // com.benwoodworth.parameterize/ParameterizeFailedError.message.<get-message>|<get-message>(){}[0]
-
-    final object Companion // com.benwoodworth.parameterize/ParameterizeFailedError.Companion|null[0]
-}
-
-final class com.benwoodworth.parameterize/ParameterizeFailure { // com.benwoodworth.parameterize/ParameterizeFailure|null[0]
-    final val arguments // com.benwoodworth.parameterize/ParameterizeFailure.arguments|{}arguments[0]
-        final fun <get-arguments>(): kotlin.collections/List<com.benwoodworth.parameterize/ParameterizeFailure.Argument<*>> // com.benwoodworth.parameterize/ParameterizeFailure.arguments.<get-arguments>|<get-arguments>(){}[0]
-    final val failure // com.benwoodworth.parameterize/ParameterizeFailure.failure|{}failure[0]
-        final fun <get-failure>(): kotlin/Throwable // com.benwoodworth.parameterize/ParameterizeFailure.failure.<get-failure>|<get-failure>(){}[0]
-    final val parameters // com.benwoodworth.parameterize/ParameterizeFailure.parameters|{}parameters[0]
-        final fun <get-parameters>(): kotlin.collections/List<com.benwoodworth.parameterize/ParameterizeScope.DeclaredParameter<*>> // com.benwoodworth.parameterize/ParameterizeFailure.parameters.<get-parameters>|<get-parameters>(){}[0]
-
-    final class <#A1: out kotlin/Any?> Argument { // com.benwoodworth.parameterize/ParameterizeFailure.Argument|null[0]
-        final val argument // com.benwoodworth.parameterize/ParameterizeFailure.Argument.argument|{}argument[0]
-            final fun <get-argument>(): #A1 // com.benwoodworth.parameterize/ParameterizeFailure.Argument.argument.<get-argument>|<get-argument>(){}[0]
-        final val parameter // com.benwoodworth.parameterize/ParameterizeFailure.Argument.parameter|{}parameter[0]
-            final fun <get-parameter>(): kotlin.reflect/KProperty<*> // com.benwoodworth.parameterize/ParameterizeFailure.Argument.parameter.<get-parameter>|<get-parameter>(){}[0]
-
-        final fun component1(): kotlin.reflect/KProperty<*> // com.benwoodworth.parameterize/ParameterizeFailure.Argument.component1|component1(){}[0]
-        final fun component2(): #A1 // com.benwoodworth.parameterize/ParameterizeFailure.Argument.component2|component2(){}[0]
-        final fun toString(): kotlin/String // com.benwoodworth.parameterize/ParameterizeFailure.Argument.toString|toString(){}[0]
-    }
-}
-
 final class com.benwoodworth.parameterize/ParameterizeIterator { // com.benwoodworth.parameterize/ParameterizeIterator|null[0]
-    constructor <init>(com.benwoodworth.parameterize/ParameterizeConfiguration) // com.benwoodworth.parameterize/ParameterizeIterator.<init>|<init>(com.benwoodworth.parameterize.ParameterizeConfiguration){}[0]
+    constructor <init>() // com.benwoodworth.parameterize/ParameterizeIterator.<init>|<init>(){}[0]
 
     final fun endIteration() // com.benwoodworth.parameterize/ParameterizeIterator.endIteration|endIteration(){}[0]
     final fun handleFailure(kotlin/Throwable) // com.benwoodworth.parameterize/ParameterizeIterator.handleFailure|handleFailure(kotlin.Throwable){}[0]
     final fun nextIteration(): com.benwoodworth.parameterize/ParameterizeScope? // com.benwoodworth.parameterize/ParameterizeIterator.nextIteration|nextIteration(){}[0]
 }
 
-final inline fun com.benwoodworth.parameterize/parameterize(com.benwoodworth.parameterize/ParameterizeConfiguration = ..., kotlin/Function1<com.benwoodworth.parameterize/ParameterizeScope, kotlin/Unit>) // com.benwoodworth.parameterize/parameterize|parameterize(com.benwoodworth.parameterize.ParameterizeConfiguration;kotlin.Function1<com.benwoodworth.parameterize.ParameterizeScope,kotlin.Unit>){}[0]
-final inline fun com.benwoodworth.parameterize/parameterize(com.benwoodworth.parameterize/ParameterizeConfiguration = ..., noinline kotlin.coroutines/SuspendFunction2<com.benwoodworth.parameterize/ParameterizeConfiguration.DecoratorScope, kotlin.coroutines/SuspendFunction1<com.benwoodworth.parameterize/ParameterizeConfiguration.DecoratorScope, kotlin/Unit>, kotlin/Unit> = ..., noinline kotlin/Function2<com.benwoodworth.parameterize/ParameterizeConfiguration.OnFailureScope, kotlin/Throwable, kotlin/Unit> = ..., noinline kotlin/Function1<com.benwoodworth.parameterize/ParameterizeConfiguration.OnCompleteScope, kotlin/Unit> = ..., kotlin/Function1<com.benwoodworth.parameterize/ParameterizeScope, kotlin/Unit>) // com.benwoodworth.parameterize/parameterize|parameterize(com.benwoodworth.parameterize.ParameterizeConfiguration;kotlin.coroutines.SuspendFunction2<com.benwoodworth.parameterize.ParameterizeConfiguration.DecoratorScope,kotlin.coroutines.SuspendFunction1<com.benwoodworth.parameterize.ParameterizeConfiguration.DecoratorScope,kotlin.Unit>,kotlin.Unit>;kotlin.Function2<com.benwoodworth.parameterize.ParameterizeConfiguration.OnFailureScope,kotlin.Throwable,kotlin.Unit>;kotlin.Function1<com.benwoodworth.parameterize.ParameterizeConfiguration.OnCompleteScope,kotlin.Unit>;kotlin.Function1<com.benwoodworth.parameterize.ParameterizeScope,kotlin.Unit>){}[0]
+final inline fun com.benwoodworth.parameterize/parameterize(kotlin/Function1<com.benwoodworth.parameterize/ParameterizeScope, kotlin/Unit>) // com.benwoodworth.parameterize/parameterize|parameterize(kotlin.Function1<com.benwoodworth.parameterize.ParameterizeScope,kotlin.Unit>){}[0]

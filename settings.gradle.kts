@@ -18,4 +18,5 @@ rootProject.name = "parameterize"
 
 include(":parameterize-api")
 include(":parameterize-core")
+include(":parameterize-configuration")
 include(":test-utils")

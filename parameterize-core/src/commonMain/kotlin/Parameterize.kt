@@ -19,11 +19,8 @@
 
 package com.benwoodworth.parameterize
 
-import com.benwoodworth.parameterize.ParameterizeConfiguration.*
 import com.benwoodworth.parameterize.ParameterizeScope.DeclaredParameter
 import com.benwoodworth.parameterize.ParameterizeScope.Parameter
-import kotlin.contracts.InvocationKind
-import kotlin.contracts.contract
 import kotlin.jvm.JvmMultifileClass
 import kotlin.jvm.JvmName
 import kotlin.reflect.KProperty
@@ -79,60 +76,24 @@ import kotlin.reflect.KProperty
  *
  * @throws ParameterizeException if the DSL is used incorrectly. (See restrictions)
  */
-public inline fun parameterize(
-    configuration: ParameterizeConfiguration = ParameterizeConfiguration.default,
-    block: ParameterizeScope.() -> Unit
-) {
+public inline fun parameterize(block: ParameterizeScope.() -> Unit) {
     // Exercise extreme caution modifying this code, since the iterator is sensitive to the behavior of this function.
     // Code inlined from a previous version could have subtly different semantics when interacting with the runtime
     // iterator of a later release, and would be major breaking change that's difficult to detect.
 
-    val iterator = ParameterizeIterator(configuration)
+    val iterator = ParameterizeIterator()
 
     while (true) {
         val scope = iterator.nextIteration() ?: break
 
         try {
             scope.block()
-        } catch (failure: Throwable) {
-            iterator.handleFailure(failure)
+        } catch (controlFlow: ParameterizeControlFlow) {
+            iterator.handleControlFlow(controlFlow)
         } finally {
             iterator.endIteration()
         }
     }
-}
-
-/**
- * Calls [parameterize] with a copy of the [configuration] that has options overridden.
- *
- * @param decorator See [ParameterizeConfiguration.Builder.decorator]
- * @param onFailure See [ParameterizeConfiguration.Builder.onFailure]
- * @param onComplete See [ParameterizeConfiguration.Builder.onComplete]
- *
- * @see parameterize
- */
-@Suppress(
-    // False positive: onComplete is called in place exactly once through the configuration by the end parameterize call
-    "LEAKED_IN_PLACE_LAMBDA", "WRONG_INVOCATION_KIND"
-)
-public inline fun parameterize(
-    configuration: ParameterizeConfiguration = ParameterizeConfiguration.default,
-    noinline decorator: suspend DecoratorScope.(iteration: suspend DecoratorScope.() -> Unit) -> Unit = configuration.decorator,
-    noinline onFailure: OnFailureScope.(failure: Throwable) -> Unit = configuration.onFailure,
-    noinline onComplete: OnCompleteScope.() -> Unit = configuration.onComplete,
-    block: ParameterizeScope.() -> Unit
-) {
-    contract {
-        callsInPlace(onComplete, InvocationKind.EXACTLY_ONCE)
-    }
-
-    val newConfiguration = ParameterizeConfiguration(configuration) {
-        this.decorator = decorator
-        this.onFailure = onFailure
-        this.onComplete = onComplete
-    }
-
-    parameterize(newConfiguration, block)
 }
 
 internal class SimpleParameterizeScope internal constructor(
