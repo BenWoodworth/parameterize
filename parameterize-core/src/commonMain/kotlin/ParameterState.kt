@@ -92,8 +92,9 @@ internal class ParameterState(
     fun <T> declare(property: KProperty<*>, arguments: Sequence<T>) {
         // Nothing to do if already declared (besides validating the property)
         this.declaredParameter?.property?.let { declaredProperty ->
-            parameterizeState.checkStateBreaking(property.equalsProperty(declaredProperty)) {
-                "Expected to be declaring `${declaredProperty.name}`, but got `${property.name}`"
+            if (!property.equalsProperty(declaredProperty)) {
+                val message = "Expected to be declaring `${declaredProperty.name}`, but got `${property.name}`"
+                throw ParameterizeBreak(parameterizeState, ParameterizeException(message))
             }
             return
         }

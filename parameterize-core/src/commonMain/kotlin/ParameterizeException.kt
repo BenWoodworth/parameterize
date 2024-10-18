@@ -16,43 +16,7 @@
 
 package com.benwoodworth.parameterize
 
-import kotlin.contracts.contract
-
 internal class ParameterizeException(
     override val message: String,
     override val cause: Throwable? = null
 ) : IllegalStateException()
-
-/**
- * Throws a [ParameterizeException] if the [value] is false.
- */
-internal inline fun checkState(
-    value: Boolean,
-    cause: Throwable? = null,
-    lazyMessage: () -> String
-) {
-    contract {
-        returns() implies value
-    }
-
-    if (!value) {
-        throw ParameterizeException(lazyMessage(), cause)
-    }
-}
-
-/**
- * Throws a [ParameterizeBreak] if the [value] is false.
- */
-internal inline fun ParameterizeState.checkStateBreaking(
-    value: Boolean,
-    cause: Throwable? = null,
-    lazyMessage: () -> String
-) {
-    contract {
-        returns() implies value
-    }
-
-    if (!value) {
-        throw ParameterizeBreak(this, ParameterizeException(lazyMessage(), cause))
-    }
-}

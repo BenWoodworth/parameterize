@@ -103,8 +103,11 @@ internal class ParameterizeState {
 
     private inline fun <T> trackNestedDeclaration(property: KProperty<*>, block: () -> T): T {
         val outerParameter = declaringParameter
-        checkStateBreaking(outerParameter == null) {
-            "Nesting parameters is not currently supported: `${property.name}` was declared within `${outerParameter!!.name}`'s arguments"
+        if (outerParameter != null) {
+            val message = "Nesting parameters is not currently supported: " +
+                    "`${property.name}` was declared within `${outerParameter.name}`'s arguments"
+
+            throw ParameterizeBreak(this, ParameterizeException(message))
         }
 
         try {
@@ -127,8 +130,11 @@ internal class ParameterizeState {
     value class HandleFailureResult(val breakEarly: Boolean)
 
     fun handleFailure(onFailure: OnFailureScope.(Throwable) -> Unit, failure: Throwable): HandleFailureResult {
-        checkState(parameterToIterate == null, failure) {
-            "Previous iteration executed to this point successfully, but now failed with the same arguments"
+        if (parameterToIterate != null) {
+            val message = "Previous iteration executed to this point successfully, " +
+                    "but now failed with the same arguments"
+
+            throw ParameterizeException(message, failure)
         }
 
         failureCount++

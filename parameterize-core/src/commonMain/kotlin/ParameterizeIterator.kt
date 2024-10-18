@@ -116,8 +116,8 @@ private class DecoratorCoroutine(
     private var completed = false
 
     private val iteration: suspend DecoratorScope.() -> Unit = {
-        checkState(continueAfterIteration == null) {
-            "Decorator must invoke the iteration function exactly once, but was invoked twice"
+        if (continueAfterIteration != null) {
+            throw ParameterizeException("Decorator must invoke the iteration function exactly once, but was invoked twice")
         }
 
         suspendDecorator { continueAfterIteration = it }
@@ -141,11 +141,11 @@ private class DecoratorCoroutine(
             )
             .resume(Unit)
 
-        checkState(continueAfterIteration != null) {
+        if (continueAfterIteration == null) {
             if (completed) {
-                "Decorator must invoke the iteration function exactly once, but was not invoked"
+                throw ParameterizeException("Decorator must invoke the iteration function exactly once, but was not invoked")
             } else {
-                "Decorator suspended unexpectedly"
+                throw ParameterizeException("Decorator suspended unexpectedly")
             }
         }
     }
@@ -156,8 +156,8 @@ private class DecoratorCoroutine(
         continueAfterIteration?.resume(Unit)
             ?: error("Iteration not invoked")
 
-        checkState(completed) {
-            "Decorator suspended unexpectedly"
+        if (!completed) {
+            throw ParameterizeException("Decorator suspended unexpectedly")
         }
     }
 }
