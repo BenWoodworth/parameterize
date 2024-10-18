@@ -27,12 +27,12 @@ public inline fun parameterize(
     val state = ConfiguredParameterizeState(configuration)
 
     parameterize {
-        val scope = state.nextIteration() ?: return
+        val scope = state.nextIteration(this) ?: return
 
         try {
             scope.block()
         } catch (failure: Throwable) {
-            state.handleFailure(failure)
+            state.handleThrow(failure)
         }
     }
 

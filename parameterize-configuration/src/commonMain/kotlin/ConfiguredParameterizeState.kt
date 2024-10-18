@@ -22,7 +22,6 @@ import kotlin.coroutines.Continuation
 import kotlin.coroutines.EmptyCoroutineContext
 import kotlin.coroutines.intrinsics.createCoroutineUnintercepted
 import kotlin.coroutines.resume
-import kotlin.jvm.JvmInline
 import kotlin.reflect.KProperty
 
 @PublishedApi
@@ -32,6 +31,7 @@ internal class ConfiguredParameterizeState(
     private var iterationCount = 0L
     private var skipCount = 0L
     private var failureCount = 0L
+    private var unhandledFailure: Throwable? = null
     private val recordedFailures = mutableListOf<ParameterizeFailure>()
 
     private var breakEarly = false
@@ -48,7 +48,7 @@ internal class ConfiguredParameterizeState(
             return null
         }
 
-        if (currentIterationScope != null) afterEach()
+        if (currentIterationScope != null) afterEach(false)
 
         return ConfiguredParameterizeScope(parameterizeScope).also {
             currentIterationScope = it
@@ -58,71 +58,66 @@ internal class ConfiguredParameterizeState(
     }
 
     @PublishedApi
-    internal fun handleFailure(failure: Throwable): Unit = when {
-        failure is ParameterizeControlFlow -> {
-            afterEach() // Since nextIteration() won't be called again to finalize the iteration
-            throw failure // TODO Could be blocked if afterEach throws
+    internal fun handleThrow(thrown: Throwable): Unit = when {
+        thrown is ParameterizeControlFlow -> {
+            // Counts as skip regardless of what kind of control flow, since either:
+            // - it's a continue this loop for this parameterize loop, meaning it *is* a proper skip;
+            // - or breaks out of this loop, meaning the count *is* inaccurate, but won't be used anyway.
+            skipCount++
+
+            throw thrown // TODO Could be blocked if afterEach throws
         }
 
         else -> {
-            afterEach() // Since the decorator should complete before onFailure is invoked
-
-            val result = handleFailure(configuration.onFailure, failure)
-            breakEarly = result.breakEarly
+            unhandledFailure = thrown
         }
     }
 
     private fun beforeEach() {
-        decoratorCoroutine = DecoratorCoroutine(parameterizeState, configuration)
+        decoratorCoroutine = DecoratorCoroutine(this, configuration)
             .also { it.beforeIteration() }
     }
 
-    private fun afterEach() {
-        val currentIterationScope = checkNotNull(currentIterationScope) { "${::currentIterationScope.name} was null" }
+    private fun afterEach(isLastIteration: Boolean) {
         val decoratorCoroutine = checkNotNull(decoratorCoroutine) { "${::decoratorCoroutine.name} was null" }
 
-        currentIterationScope.iterationCompleted = true
         decoratorCoroutine.afterIteration()
 
         this.currentIterationScope = null
         this.decoratorCoroutine = null
+
+        unhandledFailure?.let { failure ->
+            unhandledFailure = null
+            handleFailure(failure)
+        }
     }
 
-    fun handleContinue() {
-        skipCount++
-    }
-
-    @JvmInline
-    value class HandleFailureResult(val breakEarly: Boolean)
-
-    fun handleFailure(onFailure: OnFailureScope.(Throwable) -> Unit, failure: Throwable): HandleFailureResult {
+    private fun handleFailure(failure: Throwable) {
         failureCount++
 
-        val scope = OnFailureScope(
+        val onFailureScope = OnFailureScope(
             state = this,
             iterationCount,
             failureCount,
         )
 
-        with(scope) {
-            onFailure(failure)
+        configuration.onFailure(onFailureScope, failure)
 
-            if (recordFailure) {
-                recordedFailures += ParameterizeFailure(failure, parameters)
-            }
-
-            return HandleFailureResult(breakEarly)
+        if (onFailureScope.recordFailure) {
+            recordedFailures += ParameterizeFailure(failure, onFailureScope.parameters)
         }
+
+        breakEarly = onFailureScope.breakEarly
     }
 
-    private fun handleComplete() {
-        afterEach()
+    fun handleComplete() {
+        afterEach(true)
 
         val scope = OnCompleteScope(
             iterationCount,
             skipCount,
             failureCount,
-            completedEarly = hasNextArgumentCombination,
+            completedEarly = false, // TODO hasNextArgumentCombination,
             recordedFailures,
         )
 
@@ -147,7 +142,7 @@ private class ConfiguredParameterizeScope(
  * two separate parts, without needing to wrap the (inlined) [parameterize] block.
  */
 private class DecoratorCoroutine(
-    private val parameterizeState: ParameterizeState,
+    private val parameterizeState: ConfiguredParameterizeState,
     private val configuration: ParameterizeConfiguration
 ) {
     private val scope = DecoratorScope(parameterizeState)
@@ -156,7 +151,7 @@ private class DecoratorCoroutine(
     private var completed = false
 
     private val iteration: suspend DecoratorScope.() -> Unit = {
-        parameterizeState.checkState(continueAfterIteration == null) {
+        check(continueAfterIteration == null) {
             "Decorator must invoke the iteration function exactly once, but was invoked twice"
         }
 

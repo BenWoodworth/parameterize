@@ -139,7 +139,7 @@ public class ParameterizeConfiguration internal constructor(
     /** @see Builder.decorator */
     @RestrictsSuspension
     public class DecoratorScope internal constructor(
-        private val parameterizeState: ParameterizeState
+        private val parameterizeState: ConfiguredParameterizeState
     ) {
         private var initializedIsLastIteration = false
 
