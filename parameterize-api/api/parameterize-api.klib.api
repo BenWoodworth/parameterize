@@ -43,6 +43,11 @@ abstract class com.benwoodworth.parameterize/ParameterizeControlFlow : kotlin/Th
     constructor <init>() // com.benwoodworth.parameterize/ParameterizeControlFlow.<init>|<init>(){}[0]
 }
 
+final class com.benwoodworth.parameterize/ParameterizeException : kotlin/IllegalStateException { // com.benwoodworth.parameterize/ParameterizeException|null[0]
+    constructor <init>(kotlin/String) // com.benwoodworth.parameterize/ParameterizeException.<init>|<init>(kotlin.String){}[0]
+    constructor <init>(kotlin/String, kotlin/Throwable?) // com.benwoodworth.parameterize/ParameterizeException.<init>|<init>(kotlin.String;kotlin.Throwable?){}[0]
+}
+
 final value class com.benwoodworth.parameterize/LazyParameterScope { // com.benwoodworth.parameterize/LazyParameterScope|null[0]
     constructor <init>(com.benwoodworth.parameterize/ParameterizeScope) // com.benwoodworth.parameterize/LazyParameterScope.<init>|<init>(com.benwoodworth.parameterize.ParameterizeScope){}[0]
 

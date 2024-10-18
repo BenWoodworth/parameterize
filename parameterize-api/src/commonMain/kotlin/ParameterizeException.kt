@@ -16,7 +16,7 @@
 
 package com.benwoodworth.parameterize
 
-internal class ParameterizeException(
-    override val message: String,
-    override val cause: Throwable? = null
-) : IllegalStateException()
+public class ParameterizeException : IllegalStateException {
+    public constructor(message: String) : super(message)
+    public constructor(message: String, cause: Throwable?) : super(message, cause)
+}
