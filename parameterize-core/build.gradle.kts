@@ -31,6 +31,7 @@ kotlin {
         configureEach {
             languageSettings {
                 optIn("com.benwoodworth.parameterize.internal.ParameterizeApiFriendModuleApi")
+                optIn("com.benwoodworth.parameterize.internal.ParameterizeCoreFriendModuleApi")
             }
         }
 

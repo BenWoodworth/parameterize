@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.benwoodworth.parameterize
+package com.benwoodworth.parameterize.internal
 
 /**
  * Create a subclass of [Throwable] without a `stack` being captured.
@@ -43,7 +43,8 @@ package com.benwoodworth.parameterize
  * }
  * ```
  */
-internal inline fun <T : Throwable> createThrowableSubclassWithoutStack(create: () -> T): T {
+@ParameterizeCoreFriendModuleApi
+public inline fun <T : Throwable> createThrowableSubclassWithoutStack(create: () -> T): T {
     val originalCaptureStackTrace = js("Error").captureStackTrace
 
     return try {
@@ -54,6 +55,7 @@ internal inline fun <T : Throwable> createThrowableSubclassWithoutStack(create: 
     }
 }
 
-private val captureNullStackTrace = js(
+@PublishedApi
+internal val captureNullStackTrace: dynamic = js(
     "function captureNullStackTrace(instance) { instance.stack = null }"
 )

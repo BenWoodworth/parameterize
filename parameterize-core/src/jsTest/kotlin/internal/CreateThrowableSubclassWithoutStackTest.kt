@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.benwoodworth.parameterize
+package com.benwoodworth.parameterize.internal
 
 import kotlin.test.Test
 import kotlin.test.assertEquals
