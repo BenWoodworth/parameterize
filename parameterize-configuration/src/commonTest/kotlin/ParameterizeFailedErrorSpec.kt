@@ -22,6 +22,7 @@ import com.benwoodworth.parameterize.test.WasmJsIgnore
 import com.benwoodworth.parameterize.test.WasmWasiIgnore
 import com.benwoodworth.parameterize.test.stackTraceLines
 import kotlin.properties.PropertyDelegateProvider
+import kotlin.properties.ReadOnlyProperty
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNotEquals
@@ -29,18 +30,16 @@ import kotlin.test.assertNotEquals
 class ParameterizeFailedErrorSpec {
     private val arguments = buildList {
         parameterize {
-            val propertyA by PropertyDelegateProvider<Nothing?, DeclaredParameter<String>> { thisRef, property ->
-                parameterOf("argumentA")
-                    .provideDelegate(thisRef, property)
-                    .also { add(it) }
-
+            // Intercept constructed ParameterDelegates so they can be used in failures
+            val propertyA by ReadOnlyProperty { _, property ->
+                parameterOf("argumentA").provideDelegate(null, property)
             }
-            val propertyB by PropertyDelegateProvider<Nothing?, DeclaredParameter<String>> { thisRef, property ->
-                parameterOf("argumentB")
-                    .provideDelegate(thisRef, property)
-                    .also { add(it) }
-
+            val propertyB by ReadOnlyProperty { _, property ->
+                parameterOf("argumentA").provideDelegate(null, property)
             }
+
+            add(propertyA.argument)
+            add(propertyB.argument)
         }
     }
 
