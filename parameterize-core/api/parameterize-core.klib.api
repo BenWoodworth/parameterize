@@ -18,8 +18,15 @@ final class com.benwoodworth.parameterize/ParameterizeIterator { // com.benwoodw
     constructor <init>() // com.benwoodworth.parameterize/ParameterizeIterator.<init>|<init>(){}[0]
 
     final fun endIteration() // com.benwoodworth.parameterize/ParameterizeIterator.endIteration|endIteration(){}[0]
-    final fun handleFailure(kotlin/Throwable) // com.benwoodworth.parameterize/ParameterizeIterator.handleFailure|handleFailure(kotlin.Throwable){}[0]
+    final fun handleControlFlow(com.benwoodworth.parameterize/ParameterizeControlFlow) // com.benwoodworth.parameterize/ParameterizeIterator.handleControlFlow|handleControlFlow(com.benwoodworth.parameterize.ParameterizeControlFlow){}[0]
     final fun nextIteration(): com.benwoodworth.parameterize/ParameterizeScope? // com.benwoodworth.parameterize/ParameterizeIterator.nextIteration|nextIteration(){}[0]
 }
 
 final inline fun com.benwoodworth.parameterize/parameterize(kotlin/Function1<com.benwoodworth.parameterize/ParameterizeScope, kotlin/Unit>) // com.benwoodworth.parameterize/parameterize|parameterize(kotlin.Function1<com.benwoodworth.parameterize.ParameterizeScope,kotlin.Unit>){}[0]
+
+// Targets: [js]
+final val com.benwoodworth.parameterize.internal/captureNullStackTrace // com.benwoodworth.parameterize.internal/captureNullStackTrace|{}captureNullStackTrace[0]
+    final fun <get-captureNullStackTrace>(): dynamic // com.benwoodworth.parameterize.internal/captureNullStackTrace.<get-captureNullStackTrace>|<get-captureNullStackTrace>(){}[0]
+
+// Targets: [js]
+final inline fun <#A: kotlin/Throwable> com.benwoodworth.parameterize.internal/createThrowableSubclassWithoutStack(kotlin/Function0<#A>): #A // com.benwoodworth.parameterize.internal/createThrowableSubclassWithoutStack|createThrowableSubclassWithoutStack(kotlin.Function0<0:0>){0§<kotlin.Throwable>}[0]

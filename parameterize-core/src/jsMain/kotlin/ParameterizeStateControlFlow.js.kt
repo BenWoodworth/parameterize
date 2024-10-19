@@ -16,6 +16,8 @@
 
 package com.benwoodworth.parameterize
 
+import com.benwoodworth.parameterize.internal.createThrowableSubclassWithoutStack
+
 internal actual class ParameterizeContinue private constructor(
     actual override val parameterizeState: ParameterizeState
 ) : ParameterizeStateControlFlow() {

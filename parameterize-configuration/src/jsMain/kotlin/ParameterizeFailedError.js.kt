@@ -16,6 +16,8 @@
 
 package com.benwoodworth.parameterize
 
+import com.benwoodworth.parameterize.internal.createThrowableSubclassWithoutStack
+
 public actual class ParameterizeFailedError private constructor(
     internal actual val recordedFailures: List<ParameterizeFailure>,
     internal actual val successCount: Long,

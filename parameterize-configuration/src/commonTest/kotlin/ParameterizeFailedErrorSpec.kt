@@ -21,21 +21,27 @@ import com.benwoodworth.parameterize.test.NativeIgnore
 import com.benwoodworth.parameterize.test.WasmJsIgnore
 import com.benwoodworth.parameterize.test.WasmWasiIgnore
 import com.benwoodworth.parameterize.test.stackTraceLines
+import kotlin.properties.PropertyDelegateProvider
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNotEquals
 
 class ParameterizeFailedErrorSpec {
-    private val arguments = run {
-        val properties = object : Any() {
-            val propertyA = "argumentA"
-            val propertyB = "argumentB"
-        }
+    private val arguments = buildList {
+        parameterize {
+            val propertyA by PropertyDelegateProvider<Nothing?, DeclaredParameter<String>> { thisRef, property ->
+                parameterOf("argumentA")
+                    .provideDelegate(thisRef, property)
+                    .also { add(it) }
 
-        listOf(
-            DeclaredParameter(properties::propertyA, properties.propertyA),
-            DeclaredParameter(properties::propertyB, properties.propertyB)
-        )
+            }
+            val propertyB by PropertyDelegateProvider<Nothing?, DeclaredParameter<String>> { thisRef, property ->
+                parameterOf("argumentB")
+                    .provideDelegate(thisRef, property)
+                    .also { add(it) }
+
+            }
+        }
     }
 
     private val argumentA = arguments[0]

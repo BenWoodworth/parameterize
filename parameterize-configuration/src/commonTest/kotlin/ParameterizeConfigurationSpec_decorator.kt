@@ -17,8 +17,7 @@
 package com.benwoodworth.parameterize
 
 import com.benwoodworth.parameterize.ParameterizeConfiguration.*
-import com.benwoodworth.parameterize.test.EdgeCases
-import com.benwoodworth.parameterize.test.parameterizeState
+import com.benwoodworth.parameterize.test.parameterizeBlockExitTestCases
 import com.benwoodworth.parameterize.test.testAll
 import kotlin.coroutines.RestrictsSuspension
 import kotlin.coroutines.intrinsics.COROUTINE_SUSPENDED
@@ -130,21 +129,19 @@ class ParameterizeConfigurationSpec_decorator {
     }
 
     @Test
-    fun iteration_function_should_return_regardless_of_how_parameterize_block_fails() = testAll(
-        EdgeCases.iterationFailures
-    ) { getFailure ->
+    fun iteration_function_should_return_regardless_of_how_parameterize_block_is_exited() = testAll(
+        parameterizeBlockExitTestCases
+    ) { parameterizeWithBlockExit ->
         var returned = false
 
-        runCatching {
-            testParameterize(
-                decorator = { iteration ->
-                    iteration()
-                    returned = true
-                }
-            ) {
-                throw getFailure(parameterizeState)
+        val configuration = ParameterizeConfiguration {
+            decorator = { iteration ->
+                iteration()
+                returned = true
             }
         }
+
+        parameterizeWithBlockExit(configuration)
 
         assertTrue(returned, "returned")
     }

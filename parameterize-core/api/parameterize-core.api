@@ -6,7 +6,8 @@ public abstract interface annotation class com/benwoodworth/parameterize/Paramet
 
 public final class com/benwoodworth/parameterize/ParameterizeIterator {
 	public fun <init> ()V
-	public final fun handleFailure (Ljava/lang/Throwable;)V
+	public final fun endIteration ()V
+	public final fun handleControlFlow (Lcom/benwoodworth/parameterize/ParameterizeControlFlow;)V
 	public final fun nextIteration ()Lcom/benwoodworth/parameterize/ParameterizeScope;
 }
 

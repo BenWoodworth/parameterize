@@ -17,5 +17,5 @@
 package com.benwoodworth.parameterize.internal
 
 @RequiresOptIn(level = RequiresOptIn.Level.ERROR) // KT-50960
-@Target(AnnotationTarget.CONSTRUCTOR, AnnotationTarget.PROPERTY)
+@Target(AnnotationTarget.FUNCTION)
 internal annotation class ParameterizeCoreFriendModuleApi
