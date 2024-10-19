@@ -17,7 +17,8 @@
 package com.benwoodworth.parameterize
 
 import com.benwoodworth.parameterize.ParameterizeConfiguration.*
-import com.benwoodworth.parameterize.ParameterizeScope.*
+import com.benwoodworth.parameterize.ParameterizeScope.DeclaredParameter
+import com.benwoodworth.parameterize.ParameterizeScope.Parameter
 import kotlin.coroutines.Continuation
 import kotlin.coroutines.EmptyCoroutineContext
 import kotlin.coroutines.intrinsics.createCoroutineUnintercepted
@@ -39,6 +40,9 @@ internal class ConfiguredParameterizeState(
         null // Non-null if afterEach still needs to be called
     private var decoratorCoroutine: DecoratorCoroutine? = null
 
+    var isFirstIteration: Boolean = true
+        private set
+
     /**
      * Signals the start of a new [parameterize] iteration, and returns its scope if there is one.
      */
@@ -48,7 +52,7 @@ internal class ConfiguredParameterizeState(
             return null
         }
 
-        if (currentIterationScope != null) afterEach(false)
+        currentIterationScope?.let { afterEach(it, false) }
 
         return ConfiguredParameterizeScope(parameterizeScope).also {
             currentIterationScope = it
@@ -78,25 +82,28 @@ internal class ConfiguredParameterizeState(
             .also { it.beforeIteration() }
     }
 
-    private fun afterEach(isLastIteration: Boolean) {
+    private fun afterEach(
+        currentIterationScope: ConfiguredParameterizeScope,
+        isLastIteration: Boolean,
+    ) {
         val decoratorCoroutine = checkNotNull(decoratorCoroutine) { "${::decoratorCoroutine.name} was null" }
 
-        decoratorCoroutine.afterIteration()
+        decoratorCoroutine.afterIteration(isLastIteration)
 
         this.currentIterationScope = null
         this.decoratorCoroutine = null
 
         unhandledFailure?.let { failure ->
             unhandledFailure = null
-            handleFailure(failure)
+            handleFailure(currentIterationScope.declaredParameters, failure)
         }
     }
 
-    private fun handleFailure(failure: Throwable) {
+    private fun handleFailure(parameters: List<DeclaredParameter<*>>, failure: Throwable) {
         failureCount++
 
         val onFailureScope = OnFailureScope(
-            state = this,
+            parameters,
             iterationCount,
             failureCount,
         )
@@ -111,7 +118,7 @@ internal class ConfiguredParameterizeState(
     }
 
     fun handleComplete() {
-        afterEach(true)
+        currentIterationScope?.let { afterEach(it, true) }
 
         val scope = OnCompleteScope(
             iterationCount,
@@ -125,16 +132,14 @@ internal class ConfiguredParameterizeState(
     }
 }
 
-private class ConfiguredParameterizeScope(
+internal class ConfiguredParameterizeScope(
     private val baseScope: ParameterizeScope
 ) : ParameterizeScope {
-    val declaredParameters = mutableListOf<DeclaredParameter<*>>()
+    internal val declaredParameters = mutableListOf<DeclaredParameter<*>>()
 
     override fun <T> Parameter<T>.provideDelegate(thisRef: Nothing?, property: KProperty<*>): DeclaredParameter<T> =
-        with(baseScope) {
-            provideDelegate(thisRef, property)
-                .also { declaredParameters += it }
-        }
+        with(baseScope) { provideDelegate(thisRef, property) }
+            .also { declaredParameters += it }
 }
 
 /**
@@ -156,7 +161,6 @@ private class DecoratorCoroutine(
         }
 
         suspendDecorator { continueAfterIteration = it }
-        isLastIteration = !parameterizeState.hasNextArgumentCombination
     }
 
     fun beforeIteration() {
@@ -176,23 +180,23 @@ private class DecoratorCoroutine(
             )
             .resume(Unit)
 
-        parameterizeState.checkState(continueAfterIteration != null) {
+        if (continueAfterIteration == null) {
             if (completed) {
-                "Decorator must invoke the iteration function exactly once, but was not invoked"
+                throw ParameterizeException("Decorator must invoke the iteration function exactly once, but was not invoked")
             } else {
-                "Decorator suspended unexpectedly"
+                throw ParameterizeException("Decorator suspended unexpectedly")
             }
         }
     }
 
-    fun afterIteration() {
-        check(!completed) { "Decorator already completed" }
+    fun afterIteration(isLastIteration: Boolean) {
+        if (completed) throw ParameterizeException("Decorator already completed")
+
+        scope.isLastIteration = isLastIteration
 
         continueAfterIteration?.resume(Unit)
-            ?: error("Iteration not invoked")
+            ?: throw ParameterizeException("Iteration not invoked")
 
-        parameterizeState.checkState(completed) {
-            "Decorator suspended unexpectedly"
-        }
+        if (!completed) throw ParameterizeException("Decorator suspended unexpectedly")
     }
 }

@@ -177,7 +177,10 @@ public class ParameterizeConfiguration internal constructor(
 
     /** @see Builder.onFailure */
     public class OnFailureScope internal constructor(
-        private val state: ConfiguredParameterizeState,
+        /**
+         * The parameters that resulted in the failure.
+         */
+        public val parameters: List<DeclaredParameter<*>>,
 
         /**
          * The number of iterations that have been executed, including this failing iteration.
@@ -200,13 +203,6 @@ public class ParameterizeConfiguration internal constructor(
         @Suppress("DEPRECATION_ERROR")
         public val arguments: List<ParameterizeFailure.Argument<*>>
             get() = throw UnsupportedOperationException("Replaced with parameters")
-
-        /**
-         * The parameters that resulted in the failure.
-         */
-        public val parameters: List<DeclaredParameter<*>> by lazy {
-            state.getDeclaredParameters()
-        }
 
         /**
          * Specifies whether [parameterize] should break and complete early, or continue to the next iteration.
