@@ -44,7 +44,7 @@ internal class ParameterizeState {
      */
     private var lastParameterWithNextArgument: ParameterState? = null
 
-    private var startedFirstIteration = true
+    private var startedFirstIteration = false
 
     val hasNextArgumentCombination: Boolean
         get() = lastParameterWithNextArgument != null || !startedFirstIteration
