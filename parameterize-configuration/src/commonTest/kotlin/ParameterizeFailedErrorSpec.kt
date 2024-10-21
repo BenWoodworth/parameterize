@@ -16,35 +16,29 @@
 
 package com.benwoodworth.parameterize
 
-import com.benwoodworth.parameterize.ParameterizeScope.DeclaredParameter
 import com.benwoodworth.parameterize.test.NativeIgnore
 import com.benwoodworth.parameterize.test.WasmJsIgnore
 import com.benwoodworth.parameterize.test.WasmWasiIgnore
 import com.benwoodworth.parameterize.test.stackTraceLines
 import kotlin.properties.PropertyDelegateProvider
-import kotlin.properties.ReadOnlyProperty
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNotEquals
 
 class ParameterizeFailedErrorSpec {
-    private val arguments = buildList {
+    private val parameters = buildList { // KT-72465
         parameterize {
-            // Intercept constructed ParameterDelegates so they can be used in failures
-            val propertyA by ReadOnlyProperty { _, property ->
-                parameterOf("argumentA").provideDelegate(null, property)
-            }
-            val propertyB by ReadOnlyProperty { _, property ->
-                parameterOf("argumentA").provideDelegate(null, property)
+            // Intercepts constructed ParameterDelegates so they can be used in test failures
+            fun interceptedParameterOf(argument: String) = PropertyDelegateProvider { thisRef: Nothing?, property ->
+                parameterOf(argument)
+                    .provideDelegate(thisRef, property)
+                    .also { this@buildList.add(it) }
             }
 
-            add(propertyA.argument)
-            add(propertyB.argument)
+            val propertyA by interceptedParameterOf("argumentA")
+            val propertyB by interceptedParameterOf("argumentB")
         }
     }
-
-    private val argumentA = arguments[0]
-    private val argumentB = arguments[1]
 
     @Test
     fun message_should_have_failure_count_and_total() {
@@ -199,7 +193,7 @@ class ParameterizeFailedErrorSpec {
         )
 
         val error = ParameterizeFailedError(
-            failures.mapIndexed { index, it -> ParameterizeFailure(it, arguments.take(index)) },
+            failures.mapIndexed { index, it -> ParameterizeFailure(it, parameters.take(index)) },
             successCount = 4,
             failureCount = 3,
             completedEarly = false
@@ -211,10 +205,10 @@ class ParameterizeFailedErrorSpec {
             Failed 3/7 cases
             ${'\t'}${failures[0]::class.simpleName}: Failure 0
             ${'\t'}${failures[1]::class.simpleName}: Failure 1
-            ${'\t'}${'\t'}${arguments[0]}
+            ${'\t'}${'\t'}${parameters[0]}
             ${'\t'}${failures[2]::class.simpleName}: Failure 2
-            ${'\t'}${'\t'}${arguments[0]}
-            ${'\t'}${'\t'}${arguments[1]}
+            ${'\t'}${'\t'}${parameters[0]}
+            ${'\t'}${'\t'}${parameters[1]}
         """.trimIndent()
 
         assertEquals(expectedMessage, error.message)
@@ -225,7 +219,7 @@ class ParameterizeFailedErrorSpec {
         val failures = List(20) { i -> Throwable("Failure $i") }
 
         val error = ParameterizeFailedError(
-            failures.map { ParameterizeFailure(it, arguments) },
+            failures.map { ParameterizeFailure(it, parameters) },
             successCount = 4,
             failureCount = 3,
             completedEarly = false
@@ -254,7 +248,7 @@ class ParameterizeFailedErrorSpec {
     @Test
     fun recorded_failure_message_with_one_used_parameter_should_list_its_argument() {
         val error = ParameterizeFailedError(
-            listOf(ParameterizeFailure(Throwable(), arguments.take(1))),
+            listOf(ParameterizeFailure(Throwable(), parameters.take(1))),
             successCount = 0,
             failureCount = 1,
             completedEarly = false
@@ -265,7 +259,7 @@ class ParameterizeFailedErrorSpec {
         // Double indent, since the suppressed exceptions get an extra level of indentation
         val expectedMessage = """
             Failed with argument:
-            ${"\t\t"}$argumentA
+            ${"\t\t"}${parameters[0]}
         """.trimIndent()
 
         assertEquals(expectedMessage, augmentedFailure.message)
@@ -274,7 +268,7 @@ class ParameterizeFailedErrorSpec {
     @Test
     fun recorded_failure_message_with_two_used_parameters_should_list_their_arguments() {
         val error = ParameterizeFailedError(
-            listOf(ParameterizeFailure(Throwable(), arguments)),
+            listOf(ParameterizeFailure(Throwable(), parameters)),
             successCount = 0,
             failureCount = 1,
             completedEarly = false
@@ -284,8 +278,8 @@ class ParameterizeFailedErrorSpec {
 
         val expectedMessage = """
             Failed with arguments:
-            ${"\t\t"}$argumentA
-            ${"\t\t"}$argumentB
+            ${"\t\t"}${parameters[0]}
+            ${"\t\t"}${parameters[1]}
         """.trimIndent()
 
         assertEquals(expectedMessage, augmentedFailure.message)
@@ -310,7 +304,7 @@ class ParameterizeFailedErrorSpec {
         val failure = Throwable("Failure message")
 
         val error = ParameterizeFailedError(
-            listOf(ParameterizeFailure(failure, arguments)),
+            listOf(ParameterizeFailure(failure, parameters)),
             successCount = 0,
             failureCount = 1,
             completedEarly = false
@@ -325,7 +319,7 @@ class ParameterizeFailedErrorSpec {
         val failure = Throwable("Failure message")
 
         val error = ParameterizeFailedError(
-            listOf(ParameterizeFailure(failure, arguments)),
+            listOf(ParameterizeFailure(failure, parameters)),
             successCount = 0,
             failureCount = 1,
             completedEarly = false

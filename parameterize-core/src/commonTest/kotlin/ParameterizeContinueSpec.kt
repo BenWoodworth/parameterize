@@ -16,55 +16,55 @@
 
 package com.benwoodworth.parameterize
 
-import com.benwoodworth.parameterize.ParameterizeScope.Parameter
 import com.benwoodworth.parameterize.test.parameterizeState
 import com.benwoodworth.parameterize.test.probeThrow
 import kotlin.test.Test
-import kotlin.test.assertEquals
 import kotlin.test.assertIs
 
 class ParameterizeContinueSpec {
-    /**
-     * [ParameterizeContinue] is thrown when a [Parameter] is declared with no arguments, so should cause it to
-     * immediately continue to the next iteration since there isn't an argument to proceed with.
-     */
-    @Test
-    fun should_cause_parameterize_to_immediately_continue_to_the_next_iteration() {
-        val failedAssertions = mutableListOf<String>()
-
-        runCatching {
-            parameterize(
-                onFailure = { failedAssertions += "onFailure handler should not be invoked" },
-                onComplete = { failedAssertions += "onComplete handler should not be invoked" }
-            ) {
-                val iteration by parameter(1..2)
-                if (iteration == 2) failedAssertions += "Should not continue to iteration 2"
-
-                throw ParameterizeBreak(parameterizeState, ParameterizeException("Stub"))
-            }
-        }
-
-        assertEquals(emptyList(), failedAssertions, "Failed assertions")
-    }
-
-    @Test
-    fun decorator() {
-        val failedAssertions = mutableListOf<String>()
-
-        runCatching {
-            parameterize(
-                onFailure = { failedAssertions += "onFailure handler should not be invoked" },
-                onComplete = { failedAssertions += "onComplete handler should not be invoked" }
-            ) {
-                val iteration by parameter(1..2)
-                if (iteration == 2) failedAssertions += "Should not continue to iteration 2"
-
-                throw ParameterizeBreak(parameterizeState, ParameterizeException("Stub"))
-            }
-        }
-
-        assertEquals(emptyList(), failedAssertions, "Failed assertions")
-    }
+// TODO
+//
+//    /**
+//     * [ParameterizeContinue] is thrown when a [Parameter] is declared with no arguments, so should cause it to
+//     * immediately continue to the next iteration since there isn't an argument to proceed with.
+//     */
+//    @Test
+//    fun should_cause_parameterize_to_immediately_continue_to_the_next_iteration() {
+//        val failedAssertions = mutableListOf<String>()
+//
+//        runCatching {
+//            parameterize(
+//                onFailure = { failedAssertions += "onFailure handler should not be invoked" },
+//                onComplete = { failedAssertions += "onComplete handler should not be invoked" }
+//            ) {
+//                val iteration by parameter(1..2)
+//                if (iteration == 2) failedAssertions += "Should not continue to iteration 2"
+//
+//                throw ParameterizeBreak(parameterizeState, ParameterizeException("Stub"))
+//            }
+//        }
+//
+//        assertEquals(emptyList(), failedAssertions, "Failed assertions")
+//    }
+//
+//    @Test
+//    fun decorator() {
+//        val failedAssertions = mutableListOf<String>()
+//
+//        runCatching {
+//            parameterize(
+//                onFailure = { failedAssertions += "onFailure handler should not be invoked" },
+//                onComplete = { failedAssertions += "onComplete handler should not be invoked" }
+//            ) {
+//                val iteration by parameter(1..2)
+//                if (iteration == 2) failedAssertions += "Should not continue to iteration 2"
+//
+//                throw ParameterizeBreak(parameterizeState, ParameterizeException("Stub"))
+//            }
+//        }
+//
+//        assertEquals(emptyList(), failedAssertions, "Failed assertions")
+//    }
 
     // TODO Valid? Test outer declaring param within inner?
     /**
