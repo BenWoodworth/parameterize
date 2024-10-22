@@ -81,6 +81,7 @@ public final class com/benwoodworth/parameterize/ParameterizeFailure$Argument {
 
 public final class com/benwoodworth/parameterize/ParameterizeIterator {
 	public fun <init> (Lcom/benwoodworth/parameterize/ParameterizeConfiguration;)V
+	public final fun endIteration ()V
 	public final fun handleFailure (Ljava/lang/Throwable;)V
 	public final fun nextIteration ()Lcom/benwoodworth/parameterize/ParameterizeScope;
 }

@@ -117,6 +117,7 @@ final class com.benwoodworth.parameterize/ParameterizeFailure { // com.benwoodwo
 final class com.benwoodworth.parameterize/ParameterizeIterator { // com.benwoodworth.parameterize/ParameterizeIterator|null[0]
     constructor <init>(com.benwoodworth.parameterize/ParameterizeConfiguration) // com.benwoodworth.parameterize/ParameterizeIterator.<init>|<init>(com.benwoodworth.parameterize.ParameterizeConfiguration){}[0]
 
+    final fun endIteration() // com.benwoodworth.parameterize/ParameterizeIterator.endIteration|endIteration(){}[0]
     final fun handleFailure(kotlin/Throwable) // com.benwoodworth.parameterize/ParameterizeIterator.handleFailure|handleFailure(kotlin.Throwable){}[0]
     final fun nextIteration(): com.benwoodworth.parameterize/ParameterizeScope? // com.benwoodworth.parameterize/ParameterizeIterator.nextIteration|nextIteration(){}[0]
 }

@@ -37,7 +37,7 @@ internal class ParameterizeIterator(
      */
     @PublishedApi
     internal fun nextIteration(): ParameterizeScope? {
-        if (currentIterationScope != null) afterEach()
+        if (decoratorCoroutine != null) afterEach()
 
         if (breakEarly || !parameterizeState.hasNextArgumentCombination) {
             handleComplete()
@@ -49,6 +49,14 @@ internal class ParameterizeIterator(
             currentIterationScope = it
             beforeEach()
         }
+    }
+
+    @PublishedApi
+    internal fun endIteration() {
+        val currentIterationScope = checkNotNull(currentIterationScope) { "${::currentIterationScope.name} was null" }
+
+        currentIterationScope.iterationEnded = true
+        this.currentIterationScope = null
     }
 
     @PublishedApi
@@ -83,13 +91,9 @@ internal class ParameterizeIterator(
     }
 
     private fun afterEach() {
-        val currentIterationScope = checkNotNull(currentIterationScope) { "${::currentIterationScope.name} was null" }
         val decoratorCoroutine = checkNotNull(decoratorCoroutine) { "${::decoratorCoroutine.name} was null" }
 
-        currentIterationScope.iterationEnded = true
         decoratorCoroutine.afterIteration()
-
-        this.currentIterationScope = null
         this.decoratorCoroutine = null
     }
 

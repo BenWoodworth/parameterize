@@ -96,6 +96,8 @@ public inline fun parameterize(
             scope.block()
         } catch (failure: Throwable) {
             iterator.handleFailure(failure)
+        } finally {
+            iterator.endIteration()
         }
     }
 }

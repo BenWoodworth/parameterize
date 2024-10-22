@@ -176,9 +176,14 @@ class ParameterizeMisuseSpec {
     fun declaring_parameter_after_iteration_ended() {
         var declareParameter = {}
 
-        parameterize {
-            declareParameter = {
-                val parameter by parameterOf(Unit)
+        run exitLoop@{
+            parameterize {
+                declareParameter = {
+                    val parameter by parameterOf(Unit)
+                }
+
+                // A non-local return ensures that all types of loop exits will be handled (with a `finally` block)
+                return@exitLoop
             }
         }
 
