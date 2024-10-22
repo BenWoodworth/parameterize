@@ -21,7 +21,7 @@ import com.benwoodworth.parameterize.*
 /**
  * Configured [parameterize] calls with blocks that exit different ways.
  */
-val parameterizeBlockExitTestCases = listOf(
+val configuredParameterizeExitingBlockEdgeCases = listOf(
     "Return normally" to { configuration: ParameterizeConfiguration ->
         parameterize(configuration) {}
     },

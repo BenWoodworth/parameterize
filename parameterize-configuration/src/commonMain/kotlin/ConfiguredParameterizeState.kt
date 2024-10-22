@@ -40,8 +40,8 @@ internal class ConfiguredParameterizeState(
         null // Non-null if afterEach still needs to be called
     private var decoratorCoroutine: DecoratorCoroutine? = null
 
-    var isFirstIteration: Boolean = true
-        private set
+    val isFirstIteration: Boolean
+        get() = iterationCount == 1L
 
     /**
      * Signals the start of a new [parameterize] iteration, and returns its scope if there is one.
