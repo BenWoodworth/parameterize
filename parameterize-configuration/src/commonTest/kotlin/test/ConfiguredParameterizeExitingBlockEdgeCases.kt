@@ -47,7 +47,7 @@ val configuredParameterizeExitingBlockEdgeCases = listOf(
         try {
             parameterize(configuration) {
                 val illegalNesting by parameter {
-                    with (this@parameterize) {
+                    with(this@parameterize) {
                         val inner by parameterOf(Unit)
                     }
                     listOf<Unit>()

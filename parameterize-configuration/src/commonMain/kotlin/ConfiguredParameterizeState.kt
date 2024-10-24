@@ -36,8 +36,7 @@ internal class ConfiguredParameterizeState(
     private val recordedFailures = mutableListOf<ParameterizeFailure>()
 
     private var breakEarly = false
-    private var currentIterationScope: ConfiguredParameterizeScope? =
-        null // Non-null if afterEach still needs to be called
+    private var currentIterationScope: ConfiguredParameterizeScope? = null // Non-null if afterEach needs to be called
     private var decoratorCoroutine: DecoratorCoroutine? = null
 
     val isFirstIteration: Boolean
