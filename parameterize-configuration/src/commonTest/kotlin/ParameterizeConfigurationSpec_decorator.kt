@@ -17,7 +17,6 @@
 package com.benwoodworth.parameterize
 
 import com.benwoodworth.parameterize.ParameterizeConfiguration.*
-import com.benwoodworth.parameterize.test.configuredParameterizeExitingBlockEdgeCases
 import com.benwoodworth.parameterize.test.testAll
 import kotlin.coroutines.RestrictsSuspension
 import kotlin.coroutines.intrinsics.COROUTINE_SUSPENDED
@@ -129,19 +128,20 @@ class ParameterizeConfigurationSpec_decorator {
     }
 
     @Test
-    fun iteration_function_should_return_regardless_of_how_parameterize_block_is_exited() = testAll(
-        configuredParameterizeExitingBlockEdgeCases
-    ) { parameterizeExitingBlock ->
+    fun iteration_function_should_return_regardless_of_how_parameterize_block_is_exited() {
         var returned = false
 
-        val configuration = ParameterizeConfiguration {
-            decorator = { iteration ->
-                iteration()
-                returned = true
+        run exitLoop@{
+            parameterize(
+                decorator = { iteration ->
+                    iteration()
+                    returned = true
+                }
+            ) {
+                // A non-local return ensures that all types of loop exits will be handled (with a `finally` block)
+                return@exitLoop
             }
         }
-
-        parameterizeExitingBlock(configuration)
 
         assertTrue(returned, "returned")
     }
